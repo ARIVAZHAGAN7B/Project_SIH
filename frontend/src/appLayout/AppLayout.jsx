@@ -1,7 +1,7 @@
 import Navbar from '../components/Navbar'
 import RoutePage from '../routes/RoutePage'
 import Footer from '../components/Footer'
-
+import RangoliPage from '../pages/RangoliPage'
 const AppLayout = () => {
   return (
     <div>
