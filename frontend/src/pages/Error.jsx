@@ -1,6 +1,6 @@
 import React from 'react'
 
-const RuleExtraction = () => {
+const Error = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const RuleExtraction = () => {
   )
 }
 
-export default RuleExtraction
+export default Error

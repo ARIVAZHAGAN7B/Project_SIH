@@ -1,4 +1,5 @@
 import './App.css'
+import AppLayout from './appLayout/AppLayout'
 import AboutCard from './components/AboutCard'
 import Button from './components/Button'
 import Footer from './components/Footer'
@@ -8,8 +9,7 @@ function App() {
 
   return (
     <>
-    <About/>
-    <Footer/>
+    <AppLayout/>
     </>
   )
 }
