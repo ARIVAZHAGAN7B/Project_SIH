@@ -28,3 +28,5 @@ export { default as patreco2 } from './patreco2.png';
 export { default as pattrule1 } from './pattrule1.png';
 export { default as pattrule2 } from './pattrule2.png';
 export { default as redraw_kolam } from './redraw_kolam.png';
+export {default as logo} from './logo.png';
+export {default as f1} from './profile_icon/f1.png';

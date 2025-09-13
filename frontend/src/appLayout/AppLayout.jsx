@@ -1,21 +1,17 @@
 import Navbar from "../components/Navbar";
-import RoutePage from "../routes/RoutePage";
 import Footer from "../components/Footer";
-
+import AppRouter from "../routes/Routes";
+import { logo} from "../assets/Assets";
+import { f1 } from "../assets/Assets";
 const AppLayout = () => {
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Navbar (full width, top) */}
-      <Navbar />
-
-      {/* Main content with 100px margin left/right */}
+      <Navbar title="Kolam AI" logo={logo} userAvatar={f1} />
       <main className="px-[100px]">
         <div className="w-full">
-          <RoutePage/>
+          <AppRouter />
         </div>
       </main>
-
-      {/* Footer (full width, bottom) */}
       <Footer />
     </div>
   );

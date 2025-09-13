@@ -22,5 +22,4 @@ export { default as Facebook } from '@mui/icons-material/Facebook';
 // Developer platform icons
 export { default as GitHub } from '@mui/icons-material/GitHub';
 export { default as LinkedIn } from '@mui/icons-material/LinkedIn';
-
-
+export { default as AddGallery } from '@mui/icons-material/AddPhotoAlternate';
