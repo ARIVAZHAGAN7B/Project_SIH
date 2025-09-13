@@ -11,11 +11,13 @@ import Error from '../pages/Error'
 import PatternRecognition from '../pages/PatternRecognition'
 import RedrawKolam from '../pages/RedrawKolam'
 import RuleExtraction from '../pages/RuleExtraction'
+import RangoliCard from '../components/RangoliCard'
+import KolamSketch from '../pages/KolamSketch'
 const RoutePage = () => {
   return (
     <div>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<KolamSketch />} />
         <Route path='/kolam-generator' element={<KolamGenerator />} />
         <Route path='/kolam-analysis' element={<KolamAnalysis />} />
         <Route path='/kolam-gallery' element={<KolamGallery />} />

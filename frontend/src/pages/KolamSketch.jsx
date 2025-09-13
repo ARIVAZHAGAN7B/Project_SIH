@@ -1,21 +1,20 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import p5 from "p5";
-import * as dat from "dat.gui";
 
 const KolamSketch = () => {
   const sketchRef = useRef();
-  const guiRef = useRef();
+
+  // State for GUI values
+  const [kolam, setKolam] = useState({
+    tsize: 45,
+    margin: 5,
+    tnumber: 5,
+    refreshRate: 100,
+    rotation: Math.PI / 4,
+  });
 
   useEffect(() => {
     let myp5;
-    let gui;
-    let kolam = {
-      tsize: 45,
-      margin: 5,
-      tnumber: 5,
-      refreshRate: 100,
-      rotation: Math.PI / 4,
-    };
     let link, nlink, idx, pg, bgcolor;
 
     const sketch = (p) => {
@@ -24,14 +23,6 @@ const KolamSketch = () => {
         bgcolor = p.color(p.random(50), p.random(50), p.random(50));
         setupTiles();
         configTiles();
-
-        gui = new dat.GUI();
-        gui.add(kolam, "tsize", 30, 60).name("Size").onChange(setupTiles);
-        gui.add(kolam, "margin", 2, 200).name("Margin").onChange(setupTiles);
-        gui.add(kolam, "tnumber", 3, 20, 1).name("Tiles").onChange(setupTiles);
-        gui.add(kolam, "rotation", 0, 2 * Math.PI, Math.PI / 16).name("Rotation").onChange(setupTiles);
-        gui.add(kolam, "refreshRate", 10, 200, 10).name("Refresh Rate");
-        guiRef.current = gui;
       };
 
       p.draw = () => {
@@ -54,23 +45,6 @@ const KolamSketch = () => {
 
       function setupTiles() {
         p.background(bgcolor);
-        p.rectMode(p.CORNERS);
-        p.textSize(32);
-        p.fill(255);
-        p.text("Kolam", 30, 60);
-        p.textSize(12);
-        p.text(
-          '"Kolam is a form of drawing ..."\n\nTaken as-is from Wikipedia - Kolam',
-          30,
-          70,
-          400,
-          200
-        );
-        p.text(
-          "No Rights Reserved; Ported from a Processing Sketch by Bárbara Almeida",
-          30,
-          p.windowHeight - 30
-        );
         pg = p.createGraphics(
           kolam.tsize * kolam.tnumber + 2 * kolam.margin,
           kolam.tsize * kolam.tnumber + 2 * kolam.margin
@@ -151,13 +125,15 @@ const KolamSketch = () => {
       if (myp5) {
         myp5.remove();
       }
-      if (guiRef.current) {
-        guiRef.current.destroy();
-      }
     };
-  }, []);
+  }, [kolam]); // re-run p5 when kolam state changes
 
-  return <div ref={sketchRef} />;
+  // Update handler
+  const handleChange = (key, value) => {
+    setKolam((prev) => ({ ...prev, [key]: value }));
+  };
+
+  
 };
 
 export default KolamSketch;

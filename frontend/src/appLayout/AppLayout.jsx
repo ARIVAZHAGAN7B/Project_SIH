@@ -1,21 +1,24 @@
-import Navbar from '../components/Navbar'
-import RoutePage from '../routes/RoutePage'
-import Footer from '../components/Footer'
-import RangoliPage from '../pages/RangoliPage'
+import Navbar from "../components/Navbar";
+import RoutePage from "../routes/RoutePage";
+import Footer from "../components/Footer";
+
 const AppLayout = () => {
   return (
-    <div>
-      <div>
-        <Navbar />
-      </div>
-      <div>
-        <RoutePage/>
-      </div>
-      <div>
-        <Footer/>
-      </div>
-    </div>
-  )
-}
+    <div className="flex flex-col min-h-screen">
+      {/* Navbar (full width, top) */}
+      <Navbar />
 
-export default AppLayout
+      {/* Main content with 40px margin left/right */}
+      <main className="px-[100px]">
+        <div className="w-full">
+          <RoutePage/>
+        </div>
+      </main>
+
+      {/* Footer (full width, bottom) */}
+      <Footer />
+    </div>
+  );
+};
+
+export default AppLayout;

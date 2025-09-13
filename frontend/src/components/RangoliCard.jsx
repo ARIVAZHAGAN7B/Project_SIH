@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import p5 from "p5";
 
-const RangoliPage = () => {
+const RangoliCard = () => {
   const sketchRef = useRef();
 
   useEffect(() => {
@@ -43,20 +43,12 @@ const RangoliPage = () => {
         p.fill(p.random(0, 255), p.random(0, 255), p.random(0, 255));
         p.textStyle(p.BOLD);
         p.textSize(60);
-        let chars = ["रं", "गो", "ली"];
         let x = -100;
-        p.text(chars[0], x, -220, 200, 100);
         p.fill(p.random(0, 255), p.random(0, 255), p.random(0, 255));
-        p.text(chars[1], x + 50, -220, 200, 100);
         p.fill(p.random(0, 255), p.random(0, 255), p.random(0, 255));
-        p.text(chars[2], x + 120, -220, 200, 100);
         p.textStyle(p.NORMAL);
         p.fill(255);
         p.textSize(32);
-        p.text("< design your rangoli here >", -100, -100, 210, 100);
-        p.textSize(16);
-        p.text("pick your colors from top right...", -140, 0, 300, 100);
-        p.text("...drag your mouse or swipe your finger", -120, 40, 300, 100);
         p.textSize(12);
         p.pop();
       }
@@ -119,4 +111,4 @@ const RangoliPage = () => {
   return <div ref={sketchRef}></div>;
 };
 
-export default RangoliPage;
+export default RangoliCard;
