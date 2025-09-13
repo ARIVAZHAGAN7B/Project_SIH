@@ -1,4 +1,4 @@
-import { generateSVGPath } from '@/utils/svgPathGenerator';
+import { generateSVGPath } from '../utils/svgPathGenerator';
 import React from 'react';
 
 export const KolamDisplay = ({

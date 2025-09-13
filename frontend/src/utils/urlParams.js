@@ -1,7 +1,7 @@
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'react-router-dom';
 
 export const useKolamURLParams = () => {
-	const searchParams = useSearchParams();
+	const [searchParams] = useSearchParams();
 
 	return {
 		size: Math.max(3, Math.min(15, parseInt(searchParams.get('size') || '7'))),
