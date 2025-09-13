@@ -3,6 +3,7 @@ import { KolamGenerator } from '../utils/kolamGenerator';
 import { useKolamURLParams, updateURL, generateEmbedURL, speedToDuration, durationToSpeed } from '../utils/urlParams';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { KolamDisplay } from './KolamDisplay';
+import { KolamParametes } from './KolamParametes';
 
 export const KolamEditor = () => {
 	const [currentPattern, setCurrentPattern] = useState(null);
@@ -148,18 +149,6 @@ export const KolamEditor = () => {
 		}
 	}; return (
 		<div className="kolam-editor bg-amber-100 text-amber-900 min-h-screen">
-			{/* Header */}
-			<header className="p-6 text-white" style={{ backgroundColor: '#5ba293' }}>
-				<div className="max-w-6xl mx-auto">
-					<h1 className="text-4xl font-bold text-center tracking-wide">
-						Zen Kolam Generator
-					</h1>
-					<p className="text-center mt-2 text-lg opacity-90">
-						Generate beautiful traditional South Indian geometric patterns
-					</p>
-				</div>
-			</header>
-
 			<div className="max-w-6xl mx-auto p-8">
 				{/* Display Area */}
 				<div className="kolam-display-area">
@@ -232,121 +221,20 @@ export const KolamEditor = () => {
 					)}
 				</div>
 
-				{/* Controls */}
-				<div className="bg-amber-900 border-4 border-white rounded-2xl p-6 mt-8">
-					<h2 className="text-xl font-semibold mb-4 text-amber-100 flex items-center">
-						<span className="mr-2">⚙️</span>
-						Kolam Parameters
-					</h2>
-
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-						{/* Size Parameter */}
-						<div className="parameter-group">
-							<label htmlFor="size" className="block text-sm font-medium text-amber-100 mb-2">
-								Grid Size
-							</label>
-							<div className="flex items-center space-x-3">
-								<input
-									id="size"
-									type="range"
-									min="3"
-									max="15"
-									value={size}
-									onChange={(e) => setSize(parseInt(e.target.value))}
-									className="flex-1"
-									style={{ accentColor: '#f0c75e' }}
-								/>
-								<div className="bg-amber-700 px-3 py-1 rounded text-amber-100 min-w-[3rem] text-center">
-									{size}
-								</div>
-							</div>
-							<div className="text-xs text-amber-100 mt-1">
-								Creates a {size}x{size} pattern grid
-							</div>
-						</div>
-
-						{/* Animation Speed Parameter */}
-						<div className="parameter-group">
-							<label htmlFor="animationSpeed" className="block text-sm font-medium text-amber-100 mb-2">
-								Animation Duration
-							</label>
-							<div className="flex items-center space-x-3">
-								<input
-									id="animationSpeed"
-									type="range"
-									min="1"
-									max="10"
-									value={animationSpeed}
-									onChange={(e) => setAnimationSpeed(parseInt(e.target.value))}
-									className="flex-1"
-									style={{ accentColor: '#f0c75e' }}
-								/>
-								<div className="bg-amber-700 px-3 py-1 rounded text-amber-100 min-w-[3rem] text-center">
-									{animationSpeed}
-								</div>
-							</div>
-							<div className="text-xs text-amber-100 mt-1">
-								Total: {(animationDuration / 1000).toFixed(1)}s
-							</div>
-						</div>
-
-						{/* Auto-animate Parameter */}
-						{/* <div className="parameter-group">
-							<label htmlFor="autoAnimate" className="block text-sm font-medium text-amber-100 mb-2">
-								Auto-animate
-							</label>
-							<div className="flex items-center space-x-3">
-								<label className="flex items-center cursor-pointer">
-									<input
-										id="autoAnimate"
-										type="checkbox"
-										checked={initialAutoAnimate}
-										onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInitialAutoAnimate(e.target.checked)}
-										className="sr-only"
-									/>
-									<div className={`relative w-12 h-6 rounded-full transition-colors ${initialAutoAnimate ? 'bg-amber-400' : 'bg-amber-700'}`}>
-										<div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${initialAutoAnimate ? 'translate-x-6' : 'translate-x-0'}`}></div>
-									</div>
-									<span className="ml-3 text-amber-100 font-medium">
-										{initialAutoAnimate ? 'On' : 'Off'}
-									</span>
-								</label>
-							</div>
-							<div className="text-xs text-amber-100 mt-1">
-								Auto-play animation on generate
-							</div>
-						</div> */}
-					</div>
-
-					{/* Controls */}
-					<div className="flex justify-center items-center gap-6">
-						{currentPattern && (
-							<button
-								onClick={() => {
-									if (animationState === 'playing') {
-										setAnimationState('stopped');
-									} else {
-										setAnimationState('playing');
-									}
-								}}
-								className="px-6 py-3 bg-amber-900 border-2 border-white text-white rounded-lg hover:bg-amber-800 transition-colors font-medium shadow-lg flex items-center gap-2"
-								style={{ backgroundColor: animationState === 'playing' ? '#f0c75e' : undefined, color: animationState === 'playing' ? '#92400e' : undefined }}
-								title={animationState === 'playing' ? 'Stop Animation' : 'Play Animation'}
-							>
-								{animationState === 'playing' ? '⏹️' : '▶️'}
-								{animationState === 'playing' ? 'Stop Animation' : 'Play Animation'}
-							</button>
-						)}
-
-						<button
-							onClick={() => generatePattern()}
-							className="px-8 py-3 border-2 border-white text-white rounded-lg hover:opacity-90 transition-colors font-medium shadow-lg"
-							style={{ backgroundColor: '#5ba293' }}
-						>
-							Generate Kolam
-						</button>
-					</div>
-				</div>
+				<KolamParametes 
+					setSize={setSize}
+					size={size}
+					setAnimationSpeed={setAnimationSpeed}
+					animationSpeed={animationSpeed}
+					animationDuration={animationDuration}
+					currentPattern={currentPattern}
+					setCurrentPattern={setCurrentPattern}
+					animationState={animationState}
+					setAnimationState={setAnimationState}
+					generatePattern={generatePattern}
+					setInitialAutoAnimate={setInitialAutoAnimate}
+					initialAutoAnimate={initialAutoAnimate}
+				/>
 			</div>
 		</div>
 	);
