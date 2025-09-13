@@ -1,6 +1,6 @@
 import React from 'react'
 
-const KolamAnalysis = () => {
+const NotFound = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const KolamAnalysis = () => {
   )
 }
 
-export default KolamAnalysis
+export default NotFound

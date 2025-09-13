@@ -13,3 +13,14 @@ export { default as Favorite } from '@mui/icons-material/Favorite';
 export { default as ThumbUp } from '@mui/icons-material/ThumbUp';
 export { default as ArrowUpward } from '@mui/icons-material/ArrowUpward';
 export { default as HelpOutline } from '@mui/icons-material/HelpOutline';
+
+// Social media icons
+export { default as Instagram } from '@mui/icons-material/Instagram';
+export { default as Twitter } from '@mui/icons-material/Twitter';
+export { default as Facebook } from '@mui/icons-material/Facebook';
+
+// Developer platform icons
+export { default as GitHub } from '@mui/icons-material/GitHub';
+export { default as LinkedIn } from '@mui/icons-material/LinkedIn';
+
+

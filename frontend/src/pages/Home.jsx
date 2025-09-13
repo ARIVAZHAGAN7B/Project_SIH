@@ -1,9 +1,13 @@
 import React from 'react'
-
+import KolamSketch from './KolamSketch'
 const Home = () => {
   return (
-    <div>Home</div>
+    <div>
+      <div>
+        <h1>this is home</h1>
+      </div>
+    </div>
   )
 }
 
-export default Home
+export default Home;

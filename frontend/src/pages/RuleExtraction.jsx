@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {ContentCopy} from "../assets/Icons"
 
-const KolamAIConverter = () => {
+const RuleExtraction = () => {
   const [selectedTab, setSelectedTab] = useState('pseudo-code');
   const [selectedKolam, setSelectedKolam] = useState('');
   const [extractedRules, setExtractedRules] = useState('');
@@ -179,4 +179,4 @@ def apply_symmetry(pattern):
   );
 };
 
-export default KolamAIConverter;
+export default RuleExtraction;

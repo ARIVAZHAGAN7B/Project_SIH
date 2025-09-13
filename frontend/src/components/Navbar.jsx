@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
-const Navbar = ({ logo, title, navItems = [], userAvatar, onHelpClick, className = '' }) => {
+const Navbar = ({ logo, title, userAvatar, onHelpClick, className = '' }) => {
   const [scrolled, setScrolled] = useState(false);
+
+  // 👇 define navItems here
+  const navItems = [
+    { path: "/", label: "Home" },
+    { path: "/kolam-generator", label: "Kolam Generator" },
+    { path: "/redraw-kolam", label: "Kolam Redraw" },
+    { path: "/kolam-gallery", label: "Gallery" },
+    { path: "/pattern-recognition", label: "Pattern Recognition" },
+    { path: "/rule-extraction", label: "Rules" },
+    { path: "/about", label: "About" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,8 +25,11 @@ const Navbar = ({ logo, title, navItems = [], userAvatar, onHelpClick, className
 
   return (
     <header
-      className={`sticky top-0 z-10 flex items-center justify-between whitespace-nowrap border-b border-solid border-[var(--secondary-color)] px-10 py-3 transition-colors duration-300 ${scrolled ? "bg-[var(--background-color)]/90 backdrop-blur-sm" : "bg-transparent"} ${className}`}
+      className={`sticky top-0 z-10 flex items-center justify-between whitespace-nowrap border-b border-solid border-[var(--secondary-color)] px-10 py-3 transition-colors duration-300 ${
+        scrolled ? "bg-[var(--background-color)]/90 backdrop-blur-sm" : "bg-transparent"
+      } ${className}`}
     >
+      {/* Logo + Title */}
       <div className="flex items-center gap-4">
         <div className="size-8 text-[var(--primary-color)]">
           {typeof logo === "string" ? (
@@ -27,6 +41,7 @@ const Navbar = ({ logo, title, navItems = [], userAvatar, onHelpClick, className
         <h2 className="text-xl font-bold tracking-[-0.015em]">{title}</h2>
       </div>
 
+      {/* Nav Items */}
       <div className="flex items-center gap-6">
         <nav className="flex items-center gap-6 text-sm font-medium">
           {navItems.map((item, index) => (
@@ -41,17 +56,15 @@ const Navbar = ({ logo, title, navItems = [], userAvatar, onHelpClick, className
                 }`
               }
             >
-              {item.label || item.name}
+              {item.label}
             </NavLink>
           ))}
         </nav>
 
         <div className="h-6 w-px bg-[var(--secondary-color)]"></div>
 
+        {/* Avatar */}
         <div className="flex items-center gap-4">
-          
-            
-       
           <div className="size-10 overflow-hidden rounded-full">
             <img
               alt="User avatar"
