@@ -5,17 +5,12 @@ import Footer from "../components/Footer";
 const AppLayout = () => {
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Navbar (full width, top) */}
-      <Navbar />
-
-      {/* Main content with 40px margin left/right */}
+      <Navbar title="Kolam AI" />
       <main className="px-[100px]">
         <div className="w-full">
-          <RoutePage/>
+          <RoutePage />
         </div>
       </main>
-
-      {/* Footer (full width, bottom) */}
       <Footer />
     </div>
   );
