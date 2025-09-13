@@ -4,6 +4,22 @@ import TransitionButtons from "./TransitionButtons";
 import {patreco1 , patreco2} from "../assets/Assets";
 import { useState, useRef } from "react";
 
+export function Header(){
+  return(
+    <>
+      <div className="flex flex-col items-center gap-4 text-center">
+        <h1 className="text-white text-4xl font-bold leading-tight tracking-tighter">
+          Upload and Detect Kolam Patterns
+        </h1>
+        <p className="text-white/80 max-w-2xl text-lg">
+          Our AI-powered tool helps you analyze Kolam designs. Upload an image
+          to identify patterns, symmetry, and motifs within seconds.
+        </p>
+      </div>
+      </>
+
+  )
+}
 export function InputSection() {
   const [preview, setPreview] = useState(null);
   const fileInputRef = useRef(null);
@@ -33,16 +49,6 @@ export function InputSection() {
 
   return (
     <>
-      {/* Section Header */}
-      <div className="flex flex-col items-center gap-4 text-center">
-        <h1 className="text-white text-4xl font-bold leading-tight tracking-tighter">
-          Upload and Detect Kolam Patterns
-        </h1>
-        <p className="text-white/80 max-w-2xl text-lg">
-          Our AI-powered tool helps you analyze Kolam designs. Upload an image
-          to identify patterns, symmetry, and motifs within seconds.
-        </p>
-      </div>
 
       {/* Upload Area */}
       <div
