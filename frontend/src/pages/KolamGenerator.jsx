@@ -66,6 +66,7 @@ const KolamAIGenerator = () => {
           <KolamVariations variations={kolamVariations} />
         </div>
       </main>
+
     </div>
   );
 };
