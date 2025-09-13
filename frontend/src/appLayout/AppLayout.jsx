@@ -8,7 +8,7 @@ const AppLayout = () => {
       {/* Navbar (full width, top) */}
       <Navbar />
 
-      {/* Main content with 40px margin left/right */}
+      {/* Main content with 100px margin left/right */}
       <main className="px-[100px]">
         <div className="w-full">
           <RoutePage/>
