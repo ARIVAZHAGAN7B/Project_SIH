@@ -12,7 +12,7 @@ const Navbar = ({ logo, title, userAvatar, onHelpClick, className = "" }) => {
     { path: "/kolam-gallery", label: "Gallery" },
     { path: "/pattern-recognition", label: "Pattern" },
     { path: "/rule-extraction", label: "Rules" },
-    { path: "/kolam-analysis", label: "Analysis" },
+    { path: "/rangoli", label: "Rangoli" },
     { path: "/about", label: "About" },
   ];
 

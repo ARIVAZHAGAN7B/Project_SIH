@@ -1,6 +1,5 @@
 import AppLayout from './appLayout/AppLayout'
 
-import { KolamEditor } from './components/KolamEditor'
 
 function App() {
   const handleHelpClick = () => {
@@ -10,7 +9,6 @@ function App() {
   return (
     <>
     {/* <AppLayout/> */}
-    <KolamEditor />
      <AppLayout />
     </>
   );
