@@ -3,6 +3,9 @@ import { KolamCanvas, StyleControls } from "../components/Redraw";
 import { IosShare } from "../assets/Icons";
 
 const RedrawKolam = () => {
+    const handleClick = () => {
+      
+  }
   return (
     <div className="flex min-h-screen flex-col bg-[#111122] font-spaceGrotesk text-white">
       <main className="flex flex-1 gap-6 p-6">
@@ -16,7 +19,7 @@ const RedrawKolam = () => {
               </button>
             </div>
           </div>
-          <KolamCanvas />
+          <KolamCanvas handleClick={handleClick} />
         </div>
 
         {/* Right side (Style Controls) */}

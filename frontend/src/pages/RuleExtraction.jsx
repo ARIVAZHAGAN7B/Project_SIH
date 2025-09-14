@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {ContentCopy} from "../assets/Icons"
+import { InputSection } from '../components/RecognizedPattern';
 
 const RuleExtraction = () => {
   const [selectedTab, setSelectedTab] = useState('pseudo-code');
@@ -76,14 +77,7 @@ def apply_symmetry(pattern):
               </div>
               
               <div className="mt-6 flex flex-col items-center justify-center border-2 border-dashed border-[#242447] rounded-lg p-12 text-center cursor-pointer hover:border-[#1919e6] hover:bg-[#111122] transition">
-                <span className="material-symbols-outlined text-4xl text-[#9393c8] mb-2">
-                  upload_file
-                </span>
-                <p className="font-bold">Upload an Image</p>
-                <p className="text-sm text-[#9393c8]">Drag and drop or click to browse</p>
-                <button className="mt-4 px-4 py-2 bg-[#242447] hover:bg-[#1919e6] text-white font-bold text-sm rounded-lg transition-colors">
-                  Browse Files
-                </button>
+    <InputSection/>
               </div>
             </div>
 
