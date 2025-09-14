@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kolam Dot Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .upload-area:hover {
+            border-color: #007bff;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        .results {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        .control-group {
+            margin: 10px 0;
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+            font-weight: bold;
+        }
+        input[type="range"] {
+            width: 200px;
+        }
+        .dot-overlay {
+            position: relative;
+        }
+        .detected-dots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .dot-item {
+            background: #e3f2fd;
+            padding: 8px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Kolam Dot Detection System</h1> 
+        
+        <div class="upload-area" onclick="document.getElementById('imageInput').click()">
+            <p>📁 Click to upload Kolam image or use default image.png</p>
+            <input type="file" id="imageInput" accept="image/*" style="display: none;">
+        </div>
+        
+        <button class="btn" onclick="loadDefaultImage()">Load Default image.png</button>
+        <button class="btn" onclick="processImage()">🔍 Detect Dots</button>
+        <button class="btn" onclick="downloadResults()">💾 Download Results</button>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label>Blur Kernel:</label>
+                <input type="range" id="blurKernel" min="1" max="15" value="5" step="2">
+                <span id="blurValue">5</span>
+            </div>
+            <div class="control-group">
+                <label>Threshold:</label>
+                <input type="range" id="threshold" min="0" max="255" value="127">
+                <span id="thresholdValue">127</span>
+            </div>
+            <div class="control-group">
+                <label>Min Distance:</label>
+                <input type="range" id="minDistance" min="5" max="50" value="20">
+                <span id="minDistanceValue">20</span>
+            </div>
+            <div class="control-group">
+                <label>Circle Radius:</label>
+                <input type="range" id="circleRadius" min="1" max="20" value="8">
+                <span id="radiusValue">8</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Processing Steps</h2>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+            <div>
+                <h4>Original Image</h4>
+                <canvas id="originalCanvas" width="300" height="300"></canvas>
+            </div>
+            <div>
+                <h4>Grayscale</h4>
+                <canvas id="grayscaleCanvas" width="300" height="300"></canvas>
+            </div>
+            <div>
+                <h4>Blurred</h4>
+                <canvas id="blurredCanvas" width="300" height="300"></canvas>
+            </div>
+            <div>
+                <h4>Binary (Thresholded)</h4>
+                <canvas id="binaryCanvas" width="300" height="300"></canvas>
+            </div>
+            <div>
+                <h4>Detected Dots</h4>
+                <canvas id="detectionCanvas" width="300" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="results" id="analysisResults">
+            <h3>📊 Analysis Results</h3>
+            <p><strong>Dot Count:</strong> <span id="dotCount">0</span></p>
+            <p><strong>Grid Dimensions:</strong> <span id="gridSize">Not calculated</span></p>
+            <p><strong>Pattern Type:</strong> <span id="patternType">Unknown</span></p>
+            <p><strong>Symmetry:</strong> <span id="symmetryResult">Not analyzed</span></p>
+        </div>
+        
+        <div class="detected-dots" id="detectedDots"></div>
+    </div>
+
+    <script>
+        let currentImage = null;
+        let detectedDots = [];
+        let originalImageData = null;
+
+        // Initialize controls
+        document.getElementById('blurKernel').addEventListener('input', function() {
+            document.getElementById('blurValue').textContent = this.value;
+        });
+        document.getElementById('threshold').addEventListener('input', function() {
+            document.getElementById('thresholdValue').textContent = this.value;
+        });
+        document.getElementById('minDistance').addEventListener('input', function() {
+            document.getElementById('minDistanceValue').textContent = this.value;
+        });
+        document.getElementById('circleRadius').addEventListener('input', function() {
+            document.getElementById('radiusValue').textContent = this.value;
+        });
+
+        // File input handler
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    loadImageFromDataURL(event.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        async function loadDefaultImage() {
+            try {
+                const response = await fetch('image2.png');
+                if (!response.ok) {
+                    throw new Error('Could not load image.png from same directory');
+                }
+                const blob = await response.blob();
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    loadImageFromDataURL(event.target.result);
+                };
+                reader.readAsDataURL(blob);
+            } catch (error) {
+                alert('Error loading image.png: ' + error.message + '\nMake sure image.png is in the same directory as this HTML file.');
+            }
+        }
+
+        function loadImageFromDataURL(dataURL) {
+            const img = new Image();
+            img.onload = function() {
+                currentImage = img;
+                displayOriginalImage();
+                alert('Image loaded successfully! Click "Detect Dots" to analyze.');
+            };
+            img.src = dataURL;
+        }
+
+        function displayOriginalImage() {
+            if (!currentImage) return;
+            
+            const canvas = document.getElementById('originalCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Calculate scaling to fit canvas
+            const scale = Math.min(canvas.width / currentImage.width, canvas.height / currentImage.height);
+            const width = currentImage.width * scale;
+            const height = currentImage.height * scale;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(currentImage, 0, 0, width, height);
+            
+            // Store original image data for processing
+            originalImageData = ctx.getImageData(0, 0, width, height);
+        }
+
+        function processImage() {
+            if (!currentImage || !originalImageData) {
+                alert('Please load an image first!');
+                return;
+            }
+
+            try {
+                // Get parameter values
+                const blurKernel = parseInt(document.getElementById('blurKernel').value);
+                const threshold = parseInt(document.getElementById('threshold').value);
+                const minDistance = parseInt(document.getElementById('minDistance').value);
+                const circleRadius = parseInt(document.getElementById('circleRadius').value);
+
+                // Step 1: Convert to grayscale
+                const grayscaleData = convertToGrayscale(originalImageData);
+                displayProcessedImage('grayscaleCanvas', grayscaleData);
+
+                // Step 2: Apply Gaussian blur
+                const blurredData = applyGaussianBlur(grayscaleData, blurKernel);
+                displayProcessedImage('blurredCanvas', blurredData);
+
+                // Step 3: Apply binary threshold
+                const binaryData = applyThreshold(blurredData, threshold);
+                displayProcessedImage('binaryCanvas', binaryData);
+
+                // Step 4: Detect circular features (dots)
+                detectedDots = detectDots(binaryData, minDistance, circleRadius);
+
+                // Step 5: Display results
+                displayDetectedDots(detectedDots, circleRadius);
+                updateAnalysisResults();
+
+                console.log(`Detected ${detectedDots.length} dots:`, detectedDots);
+
+            } catch (error) {
+                alert('Error processing image: ' + error.message);
+                console.error('Processing error:', error);
+            }
+        }
+
+        function convertToGrayscale(imageData) {
+            const data = new Uint8ClampedArray(imageData.data);
+            
+            for (let i = 0; i < data.length; i += 4) {
+                const gray = Math.round(0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]);
+                data[i] = gray;     // R
+                data[i + 1] = gray; // G
+                data[i + 2] = gray; // B
+                // Alpha channel stays the same
+            }
+            
+            return new ImageData(data, imageData.width, imageData.height);
+        }
+
+        function applyGaussianBlur(imageData, kernelSize) {
+            const data = new Uint8ClampedArray(imageData.data);
+            const width = imageData.width;
+            const height = imageData.height;
+            
+            // Create Gaussian kernel
+            const kernel = createGaussianKernel(kernelSize);
+            const offset = Math.floor(kernelSize / 2);
+            
+            const blurred = new Uint8ClampedArray(data.length);
+            
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    let r = 0, g = 0, b = 0, a = 0;
+                    
+                    for (let ky = 0; ky < kernelSize; ky++) {
+                        for (let kx = 0; kx < kernelSize; kx++) {
+                            const py = Math.min(Math.max(y + ky - offset, 0), height - 1);
+                            const px = Math.min(Math.max(x + kx - offset, 0), width - 1);
+                            const idx = (py * width + px) * 4;
+                            const weight = kernel[ky * kernelSize + kx];
+                            
+                            r += data[idx] * weight;
+                            g += data[idx + 1] * weight;
+                            b += data[idx + 2] * weight;
+                            a += data[idx + 3] * weight;
+                        }
+                    }
+                    
+                    const idx = (y * width + x) * 4;
+                    blurred[idx] = r;
+                    blurred[idx + 1] = g;
+                    blurred[idx + 2] = b;
+                    blurred[idx + 3] = a;
+                }
+            }
+            
+            return new ImageData(blurred, width, height);
+        }
+
+        function createGaussianKernel(size) {
+            const sigma = size / 3;
+            const kernel = new Array(size * size);
+            let sum = 0;
+            const offset = Math.floor(size / 2);
+            
+            for (let y = 0; y < size; y++) {
+                for (let x = 0; x < size; x++) {
+                    const dx = x - offset;
+                    const dy = y - offset;
+                    const value = Math.exp(-(dx * dx + dy * dy) / (2 * sigma * sigma));
+                    kernel[y * size + x] = value;
+                    sum += value;
+                }
+            }
+            
+            // Normalize
+            for (let i = 0; i < kernel.length; i++) {
+                kernel[i] /= sum;
+            }
+            
+            return kernel;
+        }
+
+        function applyThreshold(imageData, threshold) {
+            const data = new Uint8ClampedArray(imageData.data);
+            
+            for (let i = 0; i < data.length; i += 4) {
+                const gray = data[i]; // R channel (all channels are same in grayscale)
+                const binary = gray < threshold ? 0 : 255; // Invert for dark dots on light background
+                
+                data[i] = binary;     // R
+                data[i + 1] = binary; // G
+                data[i + 2] = binary; // B
+                // Alpha stays the same
+            }
+            
+            return new ImageData(data, imageData.width, imageData.height);
+        }
+
+        function detectDots(binaryData, minDistance, expectedRadius) {
+            const width = binaryData.width;
+            const height = binaryData.height;
+            const data = binaryData.data;
+            const dots = [];
+            
+            // Find dark regions (potential dots)
+            for (let y = expectedRadius; y < height - expectedRadius; y += 2) {
+                for (let x = expectedRadius; x < width - expectedRadius; x += 2) {
+                    const idx = (y * width + x) * 4;
+                    
+                    // Check if current pixel is dark (potential center of dot)
+                    if (data[idx] < 128) {
+                        // Check if this location is far enough from existing dots
+                        let tooClose = false;
+                        for (let existing of dots) {
+                            const dist = Math.sqrt((x - existing.x) ** 2 + (y - existing.y) ** 2);
+                            if (dist < minDistance) {
+                                tooClose = true;
+                                break;
+                            }
+                        }
+                        
+                        if (!tooClose) {
+                            // Verify it looks like a circular dot
+                            const circularity = checkCircularity(data, width, height, x, y, expectedRadius);
+                            if (circularity > 0.3) { // Adjust threshold as needed
+                                dots.push({ x, y, radius: expectedRadius, confidence: circularity });
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return dots;
+        }
+
+        function checkCircularity(data, width, height, centerX, centerY, radius) {
+            let darkPixels = 0;
+            let totalPixels = 0;
+            
+            for (let dy = -radius; dy <= radius; dy++) {
+                for (let dx = -radius; dx <= radius; dx++) {
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance <= radius) {
+                        const x = centerX + dx;
+                        const y = centerY + dy;
+                        
+                        if (x >= 0 && x < width && y >= 0 && y < height) {
+                            const idx = (y * width + x) * 4;
+                            if (data[idx] < 128) { // Dark pixel
+                                darkPixels++;
+                            }
+                            totalPixels++;
+                        }
+                    }
+                }
+            }
+            
+            return totalPixels > 0 ? darkPixels / totalPixels : 0;
+        }
+
+        function displayProcessedImage(canvasId, imageData) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        function displayDetectedDots(dots, radius) {
+            // Copy original image to detection canvas
+            const canvas = document.getElementById('detectionCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (originalImageData) {
+                ctx.putImageData(originalImageData, 0, 0);
+            }
+            
+            // Draw detected dots
+            ctx.strokeStyle = '#ff0000';
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
+            ctx.lineWidth = 2;
+            
+            dots.forEach((dot, index) => {
+                // Draw circle
+                ctx.beginPath();
+                ctx.arc(dot.x, dot.y, radius, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.fill();
+                
+                // Draw dot number
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText((index + 1).toString(), dot.x, dot.y + 4);
+                ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
+            });
+        }
+
+        function updateAnalysisResults() {
+            document.getElementById('dotCount').textContent = detectedDots.length;
+            
+            // Estimate grid dimensions
+            if (detectedDots.length > 0) {
+                const gridInfo = estimateGrid(detectedDots);
+                document.getElementById('gridSize').textContent = `${gridInfo.cols} × ${gridInfo.rows}`;
+                document.getElementById('patternType').textContent = gridInfo.pattern;
+                document.getElementById('symmetryResult').textContent = gridInfo.symmetric ? 'Yes' : 'No';
+            }
+            
+            // Display dot positions
+            const dotsContainer = document.getElementById('detectedDots');
+            dotsContainer.innerHTML = '';
+            
+            detectedDots.forEach((dot, index) => {
+                const dotElement = document.createElement('div');
+                dotElement.className = 'dot-item';
+                dotElement.textContent = `Dot ${index + 1}: (${Math.round(dot.x)}, ${Math.round(dot.y)})`;
+                dotsContainer.appendChild(dotElement);
+            });
+        }
+
+        function estimateGrid(dots) {
+            if (dots.length < 4) {
+                return { cols: 1, rows: dots.length, pattern: 'Linear', symmetric: false };
+            }
+            
+            // Sort dots by position
+            const sortedX = [...dots].sort((a, b) => a.x - b.x);
+            const sortedY = [...dots].sort((a, b) => a.y - b.y);
+            
+            // Estimate columns and rows based on position clustering
+            const uniqueX = getUniqueClusters(sortedX.map(d => d.x), 20);
+            const uniqueY = getUniqueClusters(sortedY.map(d => d.y), 20);
+            
+            const cols = uniqueX.length;
+            const rows = uniqueY.length;
+            
+            // Determine pattern type
+            let pattern = 'Grid';
+            if (cols === rows) pattern = 'Square Grid';
+            if (dots.length > 50) pattern = 'Complex Pattern';
+            
+            // Simple symmetry check
+            const centerX = (sortedX[0].x + sortedX[sortedX.length - 1].x) / 2;
+            const symmetric = checkSymmetry(dots, centerX);
+            
+            return { cols, rows, pattern, symmetric };
+        }
+
+        function getUniqueClusters(values, tolerance) {
+            const clusters = [];
+            
+            for (let value of values) {
+                let found = false;
+                for (let cluster of clusters) {
+                    if (Math.abs(value - cluster) <= tolerance) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    clusters.push(value);
+                }
+            }
+            
+            return clusters;
+        }
+
+        function checkSymmetry(dots, centerX) {
+            let symmetricPairs = 0;
+            const tolerance = 30;
+            
+            for (let dot of dots) {
+                const mirrorX = 2 * centerX - dot.x;
+                const found = dots.some(other => 
+                    Math.abs(other.x - mirrorX) < tolerance && 
+                    Math.abs(other.y - dot.y) < tolerance
+                );
+                if (found) symmetricPairs++;
+            }
+            
+            return symmetricPairs > dots.length * 0.7; // 70% threshold
+        }
+
+        function downloadResults() {
+            const results = {
+                dotCount: detectedDots.length,
+                dots: detectedDots.map((dot, i) => ({
+                    id: i + 1,
+                    x: Math.round(dot.x),
+                    y: Math.round(dot.y),
+                    confidence: Math.round(dot.confidence * 100) / 100
+                })),
+                analysis: {
+                    gridSize: document.getElementById('gridSize').textContent,
+                    patternType: document.getElementById('patternType').textContent,
+                    symmetric: document.getElementById('symmetryResult').textContent
+                },
+                timestamp: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'kolam_analysis_results.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Load default image on page load
+        window.addEventListener('load', function() {
+            setTimeout(loadDefaultImage, 1000);
+        });
+    </script>
+</body>
+</html>
