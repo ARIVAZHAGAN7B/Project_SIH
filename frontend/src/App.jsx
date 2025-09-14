@@ -9,8 +9,7 @@ function App() {
 
   return (
     <>
-    {/* <AppLayout/> */}
-    <KolamEditor />
+    {/* <KolamEditor /> */}
      <AppLayout />
     </>
   );
