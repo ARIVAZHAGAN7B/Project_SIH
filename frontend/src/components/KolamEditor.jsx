@@ -148,14 +148,14 @@ export const KolamEditor = () => {
 			alert('Failed to copy raw SVG. Please try again.');
 		}
 	}; return (
-		<div className="kolam-editor bg-amber-100 text-amber-900 min-h-screen">
+		<div className="kolam-editor bg-black\20 text-amber-900 min-h-screen">
 			<div className="max-w-6xl mx-auto p-8">
 				{/* Display Area */}
 				<div className="kolam-display-area">
 					{currentPattern ? (
 						<div
 							ref={kolamRef}
-							className="kolam-container relative flex justify-center items-center bg-amber-900 border-4 border-white p-8 rounded-2xl shadow-lg"
+							className="kolam-container relative flex justify-center items-center bg-black\20 border-1 border-white p-8 rounded-2xl shadow-lg"
 						>
 							<KolamDisplay
 								pattern={currentPattern}
@@ -172,7 +172,7 @@ export const KolamEditor = () => {
 										<button
 											onClick={() => setShowDownloadMenu(!showDownloadMenu)}
 											disabled={isExporting}
-											className="p-3 bg-amber-900/90 border-2 text-white rounded-lg hover:bg-amber-800/90 transition-colors disabled:opacity-50 shadow-lg backdrop-blur-sm"
+											className="p-3 bg-amber-900/90 cursor-pointer border-2 text-white rounded-lg hover:bg-amber-800/90 transition-colors disabled:opacity-50 shadow-lg backdrop-blur-sm"
 											style={{ borderColor: '#ffffff', backgroundColor: '#f0c75e' }}
 											title="Download Options"
 										>
