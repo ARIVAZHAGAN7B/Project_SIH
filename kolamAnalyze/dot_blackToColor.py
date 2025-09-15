@@ -208,7 +208,7 @@ if __name__ == "__main__":
     cleaner = KolamCleaner()
     
     # Define file paths - modify these according to your files
-    bw_kolam_path = "BlackKolam.png"  # Your black & white kolam (Image 2)
+    bw_kolam_path = "Black_1.jpg"  # Your black & white kolam (Image 2)
     output_path = "Color_kolam.png"               # Output path
     
     # Run cleaning process
