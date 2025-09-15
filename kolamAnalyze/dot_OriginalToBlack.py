@@ -26,5 +26,5 @@ def remove_bg(input_path, output_path, api_key):
         print(f"❌ Error: {response.status_code}, {response.text}")
 
 # Example usage
-api_key = os.getenv("black_bg_api_key") 
+# api_key = os.getenv("black_bg_api_key") 
 remove_bg("./real_images/real_image2.png", "./black_images/black.png", api_key)
