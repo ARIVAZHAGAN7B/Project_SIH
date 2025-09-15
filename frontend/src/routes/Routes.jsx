@@ -16,7 +16,7 @@ import RangoliCard from "../components/RangoliCard";
 // All routes centralized here
 export const routes = [
   { path: "/", element: <Home />, label: "Home" },
-  { path: "/kolam-generator", element: <KolamAIGenerator />, label: "Kolam Generator" },
+  { path: "/kolam-generator", element: <KolamEditor />, label: "Kolam Generator" },
   { path: "/redraw-kolam", element: <RedrawKolam />, label: "Kolam Redraw" },
   { path: "/kolam-gallery", element: <Gallery />, label: "Gallery" },
   { path: "/pattern-recognition", element: <Pattern />, label: "Pattern" },

@@ -10,7 +10,6 @@ const KolamCanvas = () => {
   const [showGallery, setShowGallery] = useState(false);
 
   const handleClick = () => {
-    // When button clicked, show gallery
     setShowGallery(true);
   };
 
