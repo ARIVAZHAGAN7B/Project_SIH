@@ -2,7 +2,8 @@ import { generateSVGPath } from '../utils/svgPathGenerator';
 import React from 'react';
 
 export const KolamDisplay = ({
-	pattern,
+	// dimensions,
+	pattern = { dimensions: {width: 400, height: 300}, dots: [], curves: [] },
 	animate = false,
 	animationState = 'stopped',
 	animationTiming = 150,
