@@ -29,7 +29,7 @@ export const KolamDisplay = ({
 		const dy = y2 - y1;
 		return Math.sqrt(dx * dx + dy * dy);
 	};
-
+  
 	return (
 		<div className={`kolam-container ${className}`}>
 			<svg
