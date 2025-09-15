@@ -3,6 +3,8 @@ import Button from "./Button";
 import TransitionButtons from "./TransitionButtons";
 import {patreco1 , patreco2} from "../assets/Assets";
 import { useState, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { setCurrentImage } from "../store/imageSlice";
 
 export function Header(){
   return(
@@ -20,14 +22,21 @@ export function Header(){
 
   )
 }
+
+
+
 export function InputSection() {
   const [preview, setPreview] = useState(null);
   const fileInputRef = useRef(null);
+  const dispatch = useDispatch();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith("image/")) {
-      setPreview(URL.createObjectURL(file));
+      const url = URL.createObjectURL(file);
+      setPreview(url);
+       console.log("Selected image:", url); 
+      dispatch(setCurrentImage(url)); // store in Redux
     }
   };
 
@@ -39,7 +48,10 @@ export function InputSection() {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (file && file.type.startsWith("image/")) {
-      setPreview(URL.createObjectURL(file));
+      const url = URL.createObjectURL(file);
+      setPreview(url);
+      console.log("Selected image (drag & drop):", url);
+      dispatch(setCurrentImage(url)); 
     }
   };
 
@@ -48,58 +60,45 @@ export function InputSection() {
   };
 
   return (
-    <>
+    <div
+      className="flex flex-col items-center gap-8 rounded-xl border-2 border-dashed border-[#343465] px-6 py-16 cursor-pointer"
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+    >
+      {!preview ? (
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#242447]">
+            <FileUpload sx={{ fontSize: 40, color: "white" }} />
+          </div>
+          <p className="text-white text-xl font-bold">Drag and drop an image here, or click to browse</p>
+          <p className="text-white/70 text-base">Supported formats: JPG, PNG, WEBP</p>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center gap-4">
+          <img src={preview} alt="Preview" className="max-h-64 rounded-lg object-contain" />
+          <p className="text-white/80">Image ready for processing</p>
+        </div>
+      )}
 
-      {/* Upload Area */}
-      <div
-        className="flex flex-col items-center gap-8 rounded-xl border-2 border-dashed border-[#343465] px-6 py-16 cursor-pointer"
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
+      {/* Hidden Input */}
+      <input
+        type="file"
+        accept="image/*"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        className="hidden"
+      />
+
+      <button
         onClick={handleBrowseClick}
+        className="flex min-w-[84px] max-w-[480px] items-center justify-center rounded-lg h-10 px-6 bg-[#242447] text-white font-bold"
       >
-        {!preview ? (
-          <div className="flex flex-col items-center gap-4 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#242447]">
-              <FileUpload sx={{ fontSize: 40, color: "white" }} />
-            </div>
-            <p className="text-white text-xl font-bold leading-tight tracking-[-0.015em]">
-              Drag and drop an image here, or click to browse
-            </p>
-            <p className="text-white/70 text-base">
-              Supported formats: JPG, PNG, WEBP
-            </p>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center gap-4">
-            <img
-              src={preview}
-              alt="Preview"
-              className="max-h-64 rounded-lg object-contain"
-            />
-            <p className="text-white/80">Image ready for processing</p>
-          </div>
-        )}
-
-        {/* Hidden File Input */}
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          className="hidden"
-        />
-
-        {/* Browse Button */}
-        <button
-          onClick={handleBrowseClick}
-          className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-[#242447] text-white text-base font-bold"
-        >
-          Browse Files
-        </button>
-      </div>
-    </>
+        Browse Files
+      </button>
+    </div>
   );
 }
+
 
 
 
