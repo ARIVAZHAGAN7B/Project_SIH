@@ -5,7 +5,7 @@
     const sketchRef = useRef();
     const kolamRef = useRef(kolam);
 
-    // keep kolam state in sync
+   
     useEffect(() => {
       kolamRef.current = kolam;
     }, [kolam]);
@@ -23,22 +23,18 @@
           setupTiles();
           configTiles();
 
-          // store initial values
           prevTnumber = kolamRef.current.tnumber;
           prevTsize = kolamRef.current.tsize;
           prevMargin = kolamRef.current.margin;
 
-          // ✅ initialize smooth rotation
           p.currentRotation = kolamRef.current.rotation;
         };
 
         p.draw = () => {
           const k = kolamRef.current;
 
-          // ✅ smooth rotation using lerp
           p.currentRotation = p.lerp(p.currentRotation, k.rotation, 0.1);
 
-          // if tnumber/tsize/margin changed, rebuild grid
           if (
             k.tnumber !== prevTnumber ||
             k.tsize !== prevTsize ||
@@ -57,7 +53,7 @@
 
           p.push();
   p.translate(p.width / 2 - 125, p.height / 2);
-          p.rotate(p.radians(p.currentRotation)); // ✅ use smoothed rotation
+          p.rotate(p.radians(p.currentRotation)); 
           p.imageMode(p.CENTER);
           p.image(pg, 0, 0);
           p.pop();
@@ -126,7 +122,6 @@
           let bottom_right = (k.tsize / 2) * p.lerp(link[i + 1][j + 1], nlink[i + 1][j + 1], idx);
           let bottom_left = (k.tsize / 2) * p.lerp(link[i][j + 1], nlink[i][j + 1], idx);
 
-          // draw rect starting from (0,0) inside pg
           pg.rect(
             k.margin + i * k.tsize,
             k.margin + j * k.tsize,
