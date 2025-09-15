@@ -1,25 +1,40 @@
-import React from "react";
+import {React,useState} from "react";
 import FastForwardIcon from "@mui/icons-material/FastForward";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import FastRewindIcon from "@mui/icons-material/FastRewind";
 import { InputSection } from "./RecognizedPattern";
 import Button from "./Button";
+import GalleryLayout from "./GalleryLayout"; // import your gallery
+
 const KolamCanvas = () => {
+  const [showGallery, setShowGallery] = useState(false);
+
   const handleClick = () => {
-    console.log("Redraw Kolam button clicked");
-  }
+    // When button clicked, show gallery
+    setShowGallery(true);
+  };
+
   return (
-      <div className="relative flex-1 flex flex-col items-center justify-center rounded-lg bg-black/20 overflow-hidden">
-        {/* Kolam Input & Button in one row */}
-        <div className="flex items-center gap-3">
-          <InputSection />
-        </div>
-        <div className="mt-10">
-        <Button props="Redraw Kolam" onclick={handleClick}/>
-      </div>
-      </div>
+    <div className="relative flex-1 flex flex-col items-center justify-center rounded-lg bg-black/20 overflow-hidden">
+      {showGallery ? (
+        <GalleryLayout />
+      ) : (
+        <>
+          {/* Kolam Input & Button */}
+          <div className="flex items-center gap-3">
+            <InputSection />
+          </div>
+          <div className="mt-10">
+            <Button props="Redraw Kolam" onClick={handleClick} />
+          </div>
+        </>
+      )}
+    </div>
   );
 };
+
+export default KolamCanvas;
+
 
 const StyleControls = () => {
   return (

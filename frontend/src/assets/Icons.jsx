@@ -1,3 +1,5 @@
+// Analysis icon
+export { default as Analysis } from '@mui/icons-material/Analytics';
 // MUI icon imports
 export { default as PlayArrow } from '@mui/icons-material/PlayArrow';
 export { default as Download } from '@mui/icons-material/Download';

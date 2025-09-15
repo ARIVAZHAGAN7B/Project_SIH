@@ -3,12 +3,12 @@ import React from "react";
 export const KolamParametes = ({
         setSize, 
         size, 
-        setAnimationSpeed, 
+        setAnimationState, 
         animationSpeed, 
         animationDuration, 
         currentPattern,
         animationState,
-        setAnimationState,
+        setAnimationSpeed,
         generatePattern
     }) => {
   return (
@@ -130,7 +130,7 @@ export const KolamParametes = ({
         )}
 
         <button
-          onClick={() => generatePattern()}
+          onClick={generatePattern}
           className="px-8 py-3 border-2 border-white text-white rounded-lg hover:opacity-90 transition-colors font-medium shadow-lg"
           style={{ backgroundColor: "#5ba293" }}
         >

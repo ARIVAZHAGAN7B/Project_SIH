@@ -9,7 +9,9 @@ import Gallery from "../pages/KolamGallery";
 import Pattern from "../pages/PatternRecognition";
 import Rule from "../pages/RuleExtraction";
 import RedrawKolam from "../pages/RedrawKolam";
+import {KolamEditor} from "../components/KolamEditor";
 import KolamAnalysis from "../pages/KolamAnalysis";
+import RangoliCard from "../components/RangoliCard";
 
 // All routes centralized here
 export const routes = [
@@ -21,6 +23,8 @@ export const routes = [
   { path: "/rule-extraction", element: <Rule />, label: "Rule" },
   {path: "/kolam-analysis", element: <KolamAnalysis />, label: "Kolam Analysis" },
   {path:"/about", element: <About />, label: "About" },
+  {path:"/kolam-editor", element: <KolamEditor />, label: "Kolam Editor" },
+  {path:"/rangoli",element:<RangoliCard/>, label: "Rangoli"},
 ];
 
 const AppRouter = () => {
