@@ -21,7 +21,7 @@ def remove_bg(input_path, output_path, api_key):
     if response.status_code == requests.codes.ok:
         with open(output_path, "wb") as out:
             out.write(response.content)
-        print(f"✅ Background removed! Saved at: {output_path}")
+        print(f"✅  removed! Saved at: {output_path}")
     else:
         print(f"❌ Error: {response.status_code}, {response.text}")
 
