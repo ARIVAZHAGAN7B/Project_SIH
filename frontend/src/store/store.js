@@ -1,12 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from "@reduxjs/toolkit";
+import imageReducer from "./imageSlice";
 
-// Example slice (replace with your own slices)
-import exampleReducer from './exampleSlice';
-
-const store = configureStore({
+export const store = configureStore({
   reducer: {
-    example: exampleReducer,
+    image: imageReducer,
   },
 });
-
-export default store;
