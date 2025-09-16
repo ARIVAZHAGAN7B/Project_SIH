@@ -29,7 +29,7 @@ const Home = () => {
               className={`cursor-pointer p-3 rounded-xl border transition ${
                 activePoint === idx
                   ? "bg-indigo-900/40 border-indigo-400 shadow-md"
-                  : "bg-[var(--secondary-color)] border-gray-700 hover:bg-gray-800"
+                  : "bg-[#1a1a32] border-gray-700 hover:bg-gray-800"
               }`}
             >
               <span className="font-medium text-[var(--text-color)]">{point}</span>

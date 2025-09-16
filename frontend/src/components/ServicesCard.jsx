@@ -33,7 +33,7 @@ const ServicesCard = () => {
       {services.map((service, idx) => (
         <div
           key={idx}
-className="rounded-2xl border shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 p-5 flex flex-col items-center text-center"
+className="rounded-2xl bg-[#1a1a32] border shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 p-5 flex flex-col items-center text-center"
 >
           <img
             src={service.img}
@@ -44,7 +44,7 @@ className="rounded-2xl border shadow-lg hover:shadow-xl transition transform hov
             {service.title}
           </h2>
           <p className="text-white-600 mt-2 text-sm">{service.desc}</p>
-          <button onClick={() => service.navigation && navigate(service.navigation)} className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition">
+          <button onClick={() => service.navigation && navigate(service.navigation)} className="mt-4 cursor-pointer px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition">
             {service.action}
           </button>
         </div>
