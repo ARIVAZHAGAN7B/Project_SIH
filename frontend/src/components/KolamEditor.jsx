@@ -4,8 +4,13 @@ import { useKolamURLParams, updateURL, generateEmbedURL, speedToDuration, durati
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { KolamDisplay } from './KolamDisplay';
 import { KolamParametes } from './KolamParametes';
+import { useDispatch } from 'react-redux';
+import { addOneImage } from '../store/gallerySlice'; 
+import html2canvas from 'html2canvas-pro';
 
 export const KolamEditor = () => {
+	const dispatch = useDispatch();
+
 	const [currentPattern, setCurrentPattern] = useState(null);
 	const [isExporting, setIsExporting] = useState(false);
 	const [showDownloadMenu, setShowDownloadMenu] = useState(false);
@@ -18,6 +23,33 @@ export const KolamEditor = () => {
 	const [animationSpeed, setAnimationSpeed] = useState(durationToSpeed(urlParams.duration));
 	const [animationDuration, setAnimationDuration] = useState(urlParams.duration);
 	const [initialAutoAnimate, setInitialAutoAnimate] = useState(urlParams.initialAutoAnimate);
+
+	const saveKolamToGallery = async () => {
+  if (!kolamRef.current) return;
+
+  try {
+    // Look for the actual <svg> inside your kolam container
+    const svgElement = kolamRef.current.querySelector("svg");
+    if (!svgElement) {
+      console.error("No SVG found in kolamRef");
+      return;
+    }
+
+    // Serialize the SVG into a string
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(svgElement);
+
+    // Convert SVG string into a Blob and then into a URL
+    const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(svgBlob);
+
+    // Save this URL into Redux (will be used in Gallery)
+    dispatch(addOneImage(url));
+  } catch (err) {
+    console.error("Error saving kolam to gallery:", err);
+  }
+};
+
 
 	// Update URL when parameters change
 	useEffect(() => {
@@ -234,6 +266,7 @@ export const KolamEditor = () => {
 					generatePattern={generatePattern}
 					setInitialAutoAnimate={setInitialAutoAnimate}
 					initialAutoAnimate={initialAutoAnimate}
+					saveKolamToGallery={saveKolamToGallery}
 				/>
 			</div>
 		</div>
