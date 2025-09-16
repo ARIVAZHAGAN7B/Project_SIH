@@ -28,7 +28,7 @@ export const KolamEditor = () => {
   if (!kolamRef.current) return;
 
   try {
-    // Look for the actual <svg> inside your kolam container
+    // Look for the actual <svg> inside kolam container
     const svgElement = kolamRef.current.querySelector("svg");
     if (!svgElement) {
       console.error("No SVG found in kolamRef");
@@ -43,7 +43,7 @@ export const KolamEditor = () => {
     const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
     const url = URL.createObjectURL(svgBlob);
 
-    // Save this URL into Redux (will be used in Gallery)
+    // Saved URL into Redux (will be used in Gallery)
     dispatch(addOneImage(url));
   } catch (err) {
     console.error("Error saving kolam to gallery:", err);
