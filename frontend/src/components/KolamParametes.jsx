@@ -9,7 +9,8 @@ export const KolamParametes = ({
         currentPattern,
         animationState,
         setAnimationSpeed,
-        generatePattern
+        generatePattern,
+        saveKolamToGallery
     }) => {
   return (
     <div className="bg-black\20 border-1 border-white rounded-2xl p-6 mt-8">
@@ -109,6 +110,13 @@ export const KolamParametes = ({
         >
           Generate Kolam
         </button>
+        <button
+              onClick={saveKolamToGallery} // 👈 save kolam
+              className="px-8 py-3 border-2 border-white text-white rounded-lg hover:opacity-90 transition-colors font-medium shadow-lg cursor-pointer"
+              style={{ backgroundColor: "#432dd7" }}
+            >
+              Add to Gallery
+            </button>
       </div>
     </div>
   );
