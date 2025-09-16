@@ -2,7 +2,7 @@ import React from "react";
 
 const KolamControls = ({ kolam, handleChange }) => {
   return (
-    <div className="flex gap-30 bg-[#1a1a32] text-white p-6 rounded-lg shadow-lg space-y-6">
+    <div className="ml-40 flex w-[500px] flex-col gap-10 bg-[#1a1a32] text-white p-6 rounded-lg shadow-lg space-y-2">
       {/* Title */}
       <h2 className="text-xl font-semibold">Controls</h2>
 
@@ -38,14 +38,14 @@ const KolamControls = ({ kolam, handleChange }) => {
 
       {/* Number of Tiles */}
       <div>
-        <label className="block text-sm font-medium mb-1">Tiles</label>
+        <label className="block text-sm font-medium mb-1 ">Tiles</label>
         <input
           type="number"
           min="3"
           max="20"
           value={kolam.tnumber}
           onChange={(e) => handleChange("tnumber", +e.target.value)}
-          className="w-full rounded-md px-3 py-2 text-black focus:ring-2 focus:ring-indigo-500"
+          className="w-full rounded-md px-3 py-2 text-black focus:ring-2 bg-yellow-50 focus:ring-indigo-500"
         />
       </div>
 
