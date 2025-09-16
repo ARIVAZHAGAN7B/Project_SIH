@@ -52,7 +52,7 @@
           if (idx <= 1) drawTile(k);
 
           p.push();
-  p.translate(p.width / 2 - 125, p.height / 2);
+  p.translate(p.width / 2 -450, p.height / 2);
           p.rotate(p.radians(p.currentRotation)); 
           p.imageMode(p.CENTER);
           p.image(pg, 0, 0);
@@ -152,7 +152,7 @@
     }, []);
 
     return (
-      <div className="flex justify-center items-center w-full h-50% px-6">
+      <div className="flex justify-center items-center h-50% px-6">
         <div ref={sketchRef} className="rounded-lg shadow-lg overflow-hidden" />
       </div>
     );
