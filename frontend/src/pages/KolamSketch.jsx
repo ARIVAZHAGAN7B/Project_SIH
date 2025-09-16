@@ -16,9 +16,9 @@ const KolamSketch = () => {
   };
 
   return (
-    <div className="flex flex-col">
-      <KolamCanvas kolam={kolam} />
+    <div className="grid grid-cols-2">
       <KolamControls kolam={kolam} handleChange={handleChange} />
+      <KolamCanvas kolam={kolam} />
     </div>
   );
 };
