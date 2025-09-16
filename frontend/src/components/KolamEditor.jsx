@@ -1,22 +1,20 @@
 import { KolamExporter } from '../utils/kolamExporter';
 import { KolamGenerator } from '../utils/kolamGenerator';
-import { useKolamURLParams, updateURL, speedToDuration, durationToSpeed } from '../utils/urlParams';
+import { useKolamURLParams, updateURL, generateEmbedURL, speedToDuration, durationToSpeed } from '../utils/urlParams';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { KolamDisplay } from './KolamDisplay';
 import { KolamParametes } from './KolamParametes';
-import KolamGeneratorInputs from './Generator';
 
 export const KolamEditor = () => {
-
 	const [currentPattern, setCurrentPattern] = useState(null);
-	// const [isExporting, setIsExporting] = useState(false);
+	const [isExporting, setIsExporting] = useState(false);
 	const [showDownloadMenu, setShowDownloadMenu] = useState(false);
 	const [animationState, setAnimationState] = useState('stopped');
 	const kolamRef = useRef(null);
 
 	// Get URL parameters
 	const urlParams = useKolamURLParams();
-	const [size, setSize] = useState("1");
+	const [size, setSize] = useState(urlParams.size);
 	const [animationSpeed, setAnimationSpeed] = useState(durationToSpeed(urlParams.duration));
 	const [animationDuration, setAnimationDuration] = useState(urlParams.duration);
 	const [initialAutoAnimate, setInitialAutoAnimate] = useState(urlParams.initialAutoAnimate);
@@ -88,77 +86,76 @@ export const KolamEditor = () => {
 		generatePattern();
 	}, [generatePattern]);
 
-	// const exportPattern = async (format) => {
-	// 	if (!currentPattern || !kolamRef.current) return;
+	const exportPattern = async (format) => {
+		if (!currentPattern || !kolamRef.current) return;
 
-	// 	setIsExporting(true);
+		setIsExporting(true);
 
-	// 	try {
-	// 		switch (format) {
-	// 			case 'svg':
-	// 				await KolamExporter.downloadSVG(currentPattern);
-	// 				break;
-	// 			case 'png':
-	// 				await KolamExporter.downloadPNG(kolamRef.current, currentPattern.name);
-	// 				break;
-	// 			case 'gif':
-	// 				await KolamExporter.downloadAnimatedGIF(
-	// 					kolamRef.current,
-	// 					currentPattern,
-	// 					currentPattern.name,
-	// 					{ format: 'gif', frameCount: 30, delay: animationDuration }
-	// 				);
-	// 				break;
-	// 		}
-	// 	} catch (error) {
-	// 		console.error('Export failed:', error);
-	// 		alert('Export failed. Please try again.');
-	// 	} finally {
-	// 		setIsExporting(false);
-	// 	}
-	// };
+		try {
+			switch (format) {
+				case 'svg':
+					await KolamExporter.downloadSVG(currentPattern);
+					break;
+				case 'png':
+					await KolamExporter.downloadPNG(kolamRef.current, currentPattern.name);
+					break;
+				case 'gif':
+					await KolamExporter.downloadAnimatedGIF(
+						kolamRef.current,
+						currentPattern,
+						currentPattern.name,
+						{ format: 'gif', frameCount: 30, delay: animationDuration }
+					);
+					break;
+			}
+		} catch (error) {
+			console.error('Export failed:', error);
+			alert('Export failed. Please try again.');
+		} finally {
+			setIsExporting(false);
+		}
+	};
 
-	// const getEmbedCode = async () => {
-	// 	if (!currentPattern) return;
+	const getEmbedCode = async () => {
+		if (!currentPattern) return;
 
-	// 	try {
-	// 		const embedURL = generateEmbedURL({
-	// 			size,
-	// 			background: '#7b3306', // Default amber-900 background
-	// 			brush: '#ffffff', // Default white brush
-	// 		});
+		try {
+			const embedURL = generateEmbedURL({
+				size,
+				background: '#7b3306', // Default amber-900 background
+				brush: '#ffffff', // Default white brush
+			});
 
-	// 		const embedCode = `<img src="${embedURL}" alt="Kolam Pattern" style="max-width: 100%; height: auto;" />`;
+			const embedCode = `<img src="${embedURL}" alt="Kolam Pattern" style="max-width: 100%; height: auto;" />`;
 
-	// 		await navigator.clipboard.writeText(embedCode);
-	// 		alert('Embed code copied to clipboard! This will display the kolam as an SVG image.');
-	// 	} catch (error) {
-	// 		console.error('Failed to generate embed code:', error);
-	// 		alert('Failed to copy embed code. Please try again.');
-	// 	}
-	// };
+			await navigator.clipboard.writeText(embedCode);
+			alert('Embed code copied to clipboard! This will display the kolam as an SVG image.');
+		} catch (error) {
+			console.error('Failed to generate embed code:', error);
+			alert('Failed to copy embed code. Please try again.');
+		}
+	};
 
-	// const copyRawSVG = async () => {
-	// 	if (!currentPattern) return;
+	const copyRawSVG = async () => {
+		if (!currentPattern) return;
 
-	// 	try {
-	// 		const svgContent = await KolamExporter.exportAsSVG(currentPattern);
-	// 		await navigator.clipboard.writeText(svgContent);
-	// 		alert('Raw SVG code copied to clipboard! You can paste this directly into HTML or image editing software.');
-	// 	} catch (error) {
-	// 		console.error('Failed to copy raw SVG:', error);
-	// 		alert('Failed to copy raw SVG. Please try again.');
-	// 	}
-	// };
-	 return (
-		<div className="kolam-editor bg-amber-100 text-amber-900 min-h-screen">
+		try {
+			const svgContent = await KolamExporter.exportAsSVG(currentPattern);
+			await navigator.clipboard.writeText(svgContent);
+			alert('Raw SVG code copied to clipboard! You can paste this directly into HTML or image editing software.');
+		} catch (error) {
+			console.error('Failed to copy raw SVG:', error);
+			alert('Failed to copy raw SVG. Please try again.');
+		}
+	}; return (
+		<div className="kolam-editor bg-black\20 text-amber-900 min-h-screen">
 			<div className="max-w-6xl mx-auto p-8">
 				{/* Display Area */}
 				<div className="kolam-display-area">
 					{currentPattern ? (
 						<div
 							ref={kolamRef}
-							className="kolam-container relative flex justify-center items-center bg-amber-900 border-4 border-white p-8 rounded-2xl shadow-lg"
+							className="kolam-container relative flex justify-center items-center bg-black\20 border-1 border-white p-8 rounded-2xl shadow-lg"
 						>
 							<KolamDisplay
 								pattern={currentPattern}
@@ -169,13 +166,13 @@ export const KolamEditor = () => {
 							/>
 
 							{/* Save button overlaid on canvas */}
-							{/* {currentPattern && (
+							{currentPattern && (
 								<div className="absolute top-4 right-4">
 									<div className="relative download-menu">
 										<button
 											onClick={() => setShowDownloadMenu(!showDownloadMenu)}
 											disabled={isExporting}
-											className="p-3 bg-amber-900/90 border-2 text-white rounded-lg hover:bg-amber-800/90 transition-colors disabled:opacity-50 shadow-lg backdrop-blur-sm"
+											className="p-3 bg-amber-900/90 cursor-pointer border-2 text-white rounded-lg hover:bg-amber-800/90 transition-colors disabled:opacity-50 shadow-lg backdrop-blur-sm"
 											style={{ borderColor: '#ffffff', backgroundColor: '#f0c75e' }}
 											title="Download Options"
 										>
@@ -213,7 +210,7 @@ export const KolamEditor = () => {
 										)}
 									</div>
 								</div>
-							)} */}
+							)}
 						</div>
 					) : (
 						<div className="no-pattern text-center py-12 bg-amber-900 border-2 border-white rounded-2xl">
@@ -224,33 +221,19 @@ export const KolamEditor = () => {
 					)}
 				</div>
 
-				<KolamGeneratorInputs 
-				props={
-					setSize,
-					size, 
-					setAnimationSpeed, 
-					animationSpeed, 
-					animationDuration, 
-					currentPattern,
-					setCurrentPattern,
-					animationState,
-					setAnimationState,
-					generatePattern,
-					setInitialAutoAnimate,
-					initialAutoAnimate
-				}
-					// setSize={setSize}
-					// size={size}
-					// setAnimationSpeed={setAnimationSpeed}
-					// animationSpeed={animationSpeed}
-					// animationDuration={animationDuration}
-					// currentPattern={currentPattern}
-					// setCurrentPattern={setCurrentPattern}
-					// animationState={animationState}
-					// setAnimationState={setAnimationState}
-					// generatePattern={generatePattern}
-					// setInitialAutoAnimate={setInitialAutoAnimate}
-					// initialAutoAnimate={initialAutoAnimate}
+				<KolamParametes 
+					setSize={setSize}
+					size={size}
+					setAnimationSpeed={setAnimationSpeed}
+					animationSpeed={animationSpeed}
+					animationDuration={animationDuration}
+					currentPattern={currentPattern}
+					setCurrentPattern={setCurrentPattern}
+					animationState={animationState}
+					setAnimationState={setAnimationState}
+					generatePattern={generatePattern}
+					setInitialAutoAnimate={setInitialAutoAnimate}
+					initialAutoAnimate={initialAutoAnimate}
 				/>
 			</div>
 		</div>

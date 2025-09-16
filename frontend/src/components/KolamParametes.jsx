@@ -12,9 +12,10 @@ export const KolamParametes = ({
         generatePattern
     }) => {
   return (
-    <div className="bg-black/20 border-1 border-[var(--secondary-color)] rounded-lg flex flex-col p-6">
-      <h2 className="text-xl font-bold mb-4 text-amber-100">
-        Parameters
+    <div className="bg-black\20 border-1 border-white rounded-2xl p-6 mt-8">
+      <h2 className="text-xl font-semibold mb-4 text-amber-100 flex items-center">
+        {/* <span className="mr-2">⚙️</span> */}
+        Kolam Parameters
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -37,7 +38,7 @@ export const KolamParametes = ({
               className="flex-1"
               style={{ accentColor: "#f0c75e" }}
             />
-            <div className="bg-amber-700 px-3 py-1 rounded text-amber-100 min-w-[3rem] text-center">
+            <div className="bg-[#f0c75e] px-3 py-1 rounded text-[#0f172a] min-w-[3rem] text-center">
               {size}
             </div>
           </div>
@@ -65,7 +66,7 @@ export const KolamParametes = ({
               className="flex-1"
               style={{ accentColor: "#f0c75e" }}
             />
-            <div className="bg-amber-700 px-3 py-1 rounded text-amber-100 min-w-[3rem] text-center">
+            <div className="bg-[#f0c75e] px-3 py-1 rounded text-[#0f172a] min-w-[3rem] text-center">
               {animationSpeed}
             </div>
           </div>
@@ -86,7 +87,7 @@ export const KolamParametes = ({
                 setAnimationState("playing");
               }
             }}
-            className="px-6 py-3 bg-amber-900 border-2 border-white text-white rounded-lg hover:bg-amber-800 transition-colors font-medium shadow-lg flex items-center gap-2"
+            className="px-6 py-3 bg-[#432dd7] border-2 border-white text-white rounded-lg hover:bg-[#f0c75e] transition-colors cursor-pointer font-medium shadow-lg flex items-center gap-2"
             style={{
               backgroundColor:
                 animationState === "playing" ? "#f0c75e" : undefined,
@@ -96,15 +97,15 @@ export const KolamParametes = ({
               animationState === "playing" ? "Stop Animation" : "Play Animation"
             }
           >
-            {animationState === "playing" ? "⏹️" : "▶️"}
+            {/* {animationState === "playing" ? "⏹️" : "▶️"} */}
             {animationState === "playing" ? "Stop Animation" : "Play Animation"}
           </button>
         )}
 
         <button
           onClick={generatePattern}
-          className="px-8 py-3 border-2 border-white text-white rounded-lg hover:opacity-90 transition-colors font-medium shadow-lg"
-          style={{ backgroundColor: "#5ba293" }}
+          className="px-8 py-3 border-2 border-white text-white rounded-lg hover:opacity-90 transition-colors font-medium shadow-lg cursor-pointer"
+          style={{ backgroundColor: "#432dd7" }}
         >
           Generate Kolam
         </button>

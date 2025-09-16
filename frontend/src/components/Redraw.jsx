@@ -5,6 +5,10 @@ import FastRewindIcon from "@mui/icons-material/FastRewind";
 import { InputSection } from "./RecognizedPattern";
 import Button from "./Button";
 import GalleryLayout from "./GalleryLayout"; // import your gallery
+import { AddGallery, IosShare } from "../assets/Icons";
+import { useDispatch } from "react-redux";
+import { addOneImage } from "../store/gallerySlice";
+import { kolgal2 } from "../assets/Assets";
 
 const KolamCanvas = () => {
   const [showGallery, setShowGallery] = useState(false);
@@ -36,6 +40,11 @@ export default KolamCanvas;
 
 
 const StyleControls = () => {
+  const dispatch = useDispatch();
+  
+  const handleAddGallery = () => {
+    dispatch(addOneImage(kolgal2));
+  };
   return (
     <aside className="flex flex-col w-[360px] bg-[#1a1a32] rounded-lg p-6 gap-6">
       <h3 className="text-xl font-bold">Style Controls</h3>
@@ -115,15 +124,16 @@ const StyleControls = () => {
       {/* Export Options (closer to stroke texture now) */}
       <div className="space-y-4">
         <h4 className="text-sm font-medium">Export Options</h4>
-        <div className="grid grid-cols-2 gap-3">
-          <button className="flex items-center justify-center rounded-lg h-10 px-4 bg-[#242447] text-white text-sm font-bold hover:bg-opacity-80 transition-colors">
-            PNG
+        <div className="grid grid-cols-1 gap-3">
+          <button className="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-[#242447] text-white text-sm font-bold hover:bg-opacity-80 transition-colors">
+            <IosShare /> Download
           </button>
-          <button className="flex items-center justify-center rounded-lg h-10 px-4 bg-[#242447] text-white text-sm font-bold hover:bg-opacity-80 transition-colors">
-            SVG
-          </button>
-          <button className="col-span-2 flex items-center justify-center rounded-lg h-10 px-4 bg-[#242447] text-white text-sm font-bold hover:bg-opacity-80 transition-colors">
-            Animated GIF
+          <button 
+            onClick={handleAddGallery}
+            className="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-[#242447] text-white text-sm font-bold hover:bg-opacity-80 transition-colors"
+            
+          >
+            <AddGallery /> Add to Gallery
           </button>
         </div>
       </div>

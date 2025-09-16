@@ -372,7 +372,7 @@ if __name__ == "__main__":
     detector = ImprovedKolamDotDetector()
     
     # Test with your image
-    image_path = "BlackKolam.png"  # Replace with your image path
+    image_path = "final_3colorImage1.png"  # Replace with your image path
     
     print("Testing improved detection methods:")
     print("=" * 50)
