@@ -9,7 +9,7 @@ import {
   Kolam_Gen7,
 } from "../assets/Assets";
 
-import {KolamGeneratorInputs, KolamDisplay, KolamVariations} from "../components/Generator";
+import {KolamGeneratorInputs, KolamVariations, KolamDisplayer} from "../components/Generator";
 
 const KolamAIGenerator = () => {
   const [gridSize, setGridSize] = useState(10);
@@ -62,7 +62,7 @@ const KolamAIGenerator = () => {
 
         {/* Right Side */}
         <div className="flex flex-col gap-8 lg:col-span-2 xl:col-span-3">
-          <KolamDisplay image={Kolam_Gen1} />
+          <KolamDisplayer image={Kolam_Gen1} />
           <KolamVariations variations={kolamVariations} />
         </div>
       </main>

@@ -1,39 +1,43 @@
 import React from "react";
 import { ArrowDropDown } from "../assets/Icons";
 import {
-  kolgal10,
-  kolgal11,
-  kolgal12,
+  // kolgal10,
+  // kolgal11,
+  // kolgal12,
   kolan_gallery1,
   kolgal2,
-  kolgal3,
-  kolgal4,
-  kolgal5,
-  kolgal6,
-  kolgal7,
-  kolgal8,
-  kolgal9,
+  // kolgal3,
+  // kolgal4,
+  // kolgal5,
+  // kolgal6,
+  // kolgal7,
+  // kolgal8,
+  // kolgal9,
 } from "../assets/Assets";
+import { useSelector } from "react-redux";
 
 const KolamGallery = () => {
   // Put all gallery images into an array for easy mapping
   const galleryImages = [
     kolan_gallery1,
     kolgal2,
-    kolgal3,
-    kolgal4,
-    kolgal5,
-    kolgal6,
-    kolgal7,
-    kolgal8,
-    kolgal9,
-    kolgal10,
-    kolgal11,
-    kolgal12,
+    // kolgal3,
+    // kolgal4,
+    // kolgal5,
+    // kolgal6,
+    // kolgal7,
+    // kolgal8,
+    // kolgal9,
+    // kolgal10,
+    // kolgal11,
+    // kolgal12,
   ];
   const handleZoom = () => {
     console.log("Zoom");
   }
+
+  const gallerySavedImages = useSelector((state) => state.gallery.savedImage);
+  // const allImages = [...galleryImages, ...gallerySavedImages];
   return (
     <div
       className="relative flex size-full min-h-screen flex-col overflow-x-hidden bg-gray-950 text-white font-sans antialiased"
@@ -69,7 +73,7 @@ const KolamGallery = () => {
 
           {/* Gallery grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {galleryImages.map((img, idx) => (
+            {gallerySavedImages.map((img, idx) => (
               <div
                 key={idx}
                 className="group relative aspect-square overflow-hidden rounded-lg"

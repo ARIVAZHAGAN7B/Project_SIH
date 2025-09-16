@@ -20,7 +20,7 @@ export const KolamParametes = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         {/* Size Parameter */}
-        <div className="parameter-group">
+        <div className="flex flex-col gap-4">
           <label
             htmlFor="size"
             className="block text-sm font-medium text-amber-100 mb-2"
@@ -74,33 +74,6 @@ export const KolamParametes = ({
             Total: {(animationDuration / 1000).toFixed(1)}s
           </div>
         </div>
-
-        {/* Auto-animate Parameter */}
-        {/* <div className="parameter-group">
-							<label htmlFor="autoAnimate" className="block text-sm font-medium text-amber-100 mb-2">
-								Auto-animate
-							</label>
-							<div className="flex items-center space-x-3">
-								<label className="flex items-center cursor-pointer">
-									<input
-										id="autoAnimate"
-										type="checkbox"
-										checked={initialAutoAnimate}
-										onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInitialAutoAnimate(e.target.checked)}
-										className="sr-only"
-									/>
-									<div className={`relative w-12 h-6 rounded-full transition-colors ${initialAutoAnimate ? 'bg-amber-400' : 'bg-amber-700'}`}>
-										<div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${initialAutoAnimate ? 'translate-x-6' : 'translate-x-0'}`}></div>
-									</div>
-									<span className="ml-3 text-amber-100 font-medium">
-										{initialAutoAnimate ? 'On' : 'Off'}
-									</span>
-								</label>
-							</div>
-							<div className="text-xs text-amber-100 mt-1">
-								Auto-play animation on generate
-							</div>
-						</div> */}
       </div>
 
       {/* Controls */}
