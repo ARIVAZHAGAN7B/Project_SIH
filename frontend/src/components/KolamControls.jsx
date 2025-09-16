@@ -36,15 +36,35 @@ const KolamControls = ({ kolam, handleChange }) => {
         />
       </div>
 
+
       {/* Number of Tiles */}
       <div>
-        <label className="block text-sm font-medium mb-1 ">Tiles</label>
+        <label className="block text-sm font-medium mb-1">Tiles</label>
         <input
           type="number"
-          min="3"
-          max="20"
+          min="1"
+          max="7"
           value={kolam.tnumber}
-          onChange={(e) => handleChange("tnumber", +e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            // allow empty string while typing
+            if (val === "") {
+              handleChange("tnumber", "");
+              return;
+            }
+
+            const num = +val;
+            // allow 1-7 without blocking
+            if (num >= 1 && num <= 7) {
+              handleChange("tnumber", num);
+            }
+          }}
+          onBlur={(e) => {
+            let val = +e.target.value;
+            if (isNaN(val) || val < 1) val = 1;
+            if (val > 7) val = 7;
+            handleChange("tnumber", val);
+          }}
           className="w-full rounded-md px-3 py-2 text-black focus:ring-2 bg-yellow-50 focus:ring-indigo-500"
         />
       </div>
@@ -52,18 +72,21 @@ const KolamControls = ({ kolam, handleChange }) => {
       {/* Rotation */}
       <div>
         <label className="block text-sm font-medium mb-1">
-          Rotation <span className="text-gray-400">({kolam.rotation.toFixed(2)})</span>
+          Rotation
         </label>
         <input
           type="range"
-          min="0"
-          max={Math.PI * 2}
-          step={Math.PI / 16}
+          min={-15 * Math.PI}   // -360 degrees
+          max={15 * Math.PI}    // +360 degrees
+          step={Math.PI / 36}  // 5° steps
           value={kolam.rotation}
           onChange={(e) => handleChange("rotation", +e.target.value)}
           className="w-full accent-indigo-500"
         />
       </div>
+
+
+
 
       {/* Refresh Rate */}
       <div>
