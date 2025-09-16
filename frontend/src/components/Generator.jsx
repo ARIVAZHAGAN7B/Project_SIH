@@ -6,141 +6,152 @@ import {
   Kolam_Gen5,
   Kolam_Gen6,
   Kolam_Gen7,
-  kolgal10,
+  // kolgal10,
 } from "../assets/Assets";
 import Button from "./Button";
 import TransitionButtons from "./TransitionButtons";
-import { generateSVGPath } from "../utils/svgPathGenerator";
+// import { generateSVGPath } from "../utils/svgPathGenerator";
 import ServiceButton from "./ServiceButton";
+import { KolamParametes } from './KolamParametes';
 /* -------------------- Inputs Component -------------------- */
+import React from "react";
+import { KolamDisplay } from "./KolamDisplay";
 
 const KolamGeneratorInputs = ({
-  gridSize,
-  setGridSize,
-  animationSpeed,
-  setAnimationSpeed,
-  animationDuration,
-  animationState,
-  setAnimationState,
-  currentPattern,
-  onGenerate,
+  // setSize,
+  // size,
+  // setAnimationState,
+  // animationSpeed,
+  // animationDuration,
+  // currentPattern,
+  // animationState,
+  // setAnimationSpeed,
+  // generatePattern,
+  props
 }) => {
+  const {
+          setSize,
+					size, 
+					setAnimationSpeed, 
+					animationSpeed, 
+					animationDuration, 
+					currentPattern,
+					setCurrentPattern,
+					animationState,
+					setAnimationState,
+					generatePattern,
+					setInitialAutoAnimate,
+					initialAutoAnimate
+        } = props;
   return (
-    <div className="flex flex-col gap-8 lg:col-span-1 xl:col-span-1">
-      {/* Header */}
-      <div className="flex flex-col gap-2">
-        <h1 className="text-4xl font-bold tracking-tight">Kolam Generator</h1>
-        <p className="text-base text-[var(--subtle-text-color)]">
-          Create unique Kolam designs. Adjust parameters to explore
-          different patterns.
-        </p>
-      </div>
+    <div className="flex flex-col gap-6 rounded-lg border border-[var(--secondary-color)] bg-black/20 p-6">
+      <h3 className="text-xl font-bold text-[var(--text-color)]">Parameters</h3>
 
-      {/* Parameters Panel */}
-      <div className="flex flex-col gap-6 rounded-lg border border-[var(--secondary-color)] bg-black/20 p-6">
-        <h3 className="text-xl font-bold">Parameters</h3>
-        <div className="flex flex-col gap-4">
-          {/* Grid Size */}
-          <label className="flex flex-col gap-2">
-            <span className="text-sm font-medium">Grid Size</span>
-            <input
-              className="w-full rounded-lg border-[var(--secondary-color)] bg-[var(--secondary-color)]/50 p-3 text-sm 
-                         focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] text-[var(--text-color)]"
-              type="number"
-              min="3"
-              max="15"
-              value={gridSize}
-              onChange={(e) => setGridSize(parseInt(e.target.value))}
-            />
-            <span className="text-xs text-[var(--subtle-text-color)]">
-              Creates a {gridSize}x{gridSize} pattern grid
+      <div className="flex flex-col gap-4">
+        {/* Grid Size */}
+        <label className="flex flex-col gap-2">
+          <span className="text-sm font-medium">Grid Size</span>
+          <input
+            className="w-full rounded-lg border-[var(--secondary-color)] bg-[var(--secondary-color)]/50 p-3 text-sm 
+                       focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] text-[var(--text-color)]"
+            type="number"
+            min="3"
+            max="15"
+            value={size}
+            onChange={(e) => setSize(parseInt(e.target.value))}
+          />
+          <span className="text-xs text-[var(--subtle-text-color)]">
+            Creates a {size}x{size} pattern grid
+          </span>
+        </label>
+
+        {/* Animation Duration */}
+        <label className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium">Animation Duration</span>
+            <span className="text-sm text-[var(--subtle-text-color)]">
+              {(animationDuration / 1000).toFixed(1)}s
             </span>
-          </label>
-
-          {/* Animation Duration */}
-          <label className="flex flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Animation Duration</span>
-              <span className="text-sm text-[var(--subtle-text-color)]">
-                {(animationDuration / 1000).toFixed(1)}s
-              </span>
-            </div>
-            <input
-              className="w-full"
-              type="range"
-              min="1"
-              max="10"
-              value={animationSpeed}
-              onChange={(e) => setAnimationSpeed(parseInt(e.target.value))}
-            />
-          </label>
-        </div>
+          </div>
+          <input
+            className="w-full"
+            type="range"
+            min="1"
+            max="10"
+            value={animationSpeed}
+            onChange={(e) => setAnimationSpeed(parseInt(e.target.value))}
+          />
+        </label>
       </div>
 
       {/* Controls */}
       <div className="flex flex-col gap-4">
         {currentPattern && (
-          <Button
-            props={
-              animationState === "playing" ? "⏹️ Stop Animation" : "▶️ Play Animation"
-            }
+          <button
             onClick={() =>
-              setAnimationState(animationState === "playing" ? "stopped" : "playing")
+              setAnimationState(
+                animationState === "playing" ? "stopped" : "playing"
+              )
             }
             className={`flex h-10 items-center justify-center gap-2 rounded-lg px-4 text-sm font-bold transition-transform hover:scale-105 ${
               animationState === "playing"
                 ? "bg-yellow-400 text-amber-900"
                 : "bg-amber-900 text-white"
             }`}
-          />
+          >
+            {animationState === "playing" ? "⏹️ Stop Animation" : "▶️ Play Animation"}
+          </button>
         )}
 
         <button
-          onClick={onGenerate}
+          onClick={generatePattern}
           className="flex h-10 items-center justify-center gap-2 rounded-lg bg-[var(--primary-color)] px-4 text-sm font-bold transition-transform hover:scale-105"
-        >Generate New</button>
+        >
+          Generate New
+        </button>
       </div>
     </div>
   );
 };
+
 
 export default KolamGeneratorInputs;
 
 
 /* -------------------- Display Component -------------------- */
 
-const KolamDisplay = ({
-  pattern = { dimensions: { width: 400, height: 300 }, dots: [], curves: [] },
-  animate = false,
-  animationState = "stopped",
-  animationTiming = 150,
-  className = "",
-}) => {
-  const { dimensions, dots, curves } = pattern;
-  const handleAnalysis = () => {
-    alert("Analysis feature coming soon!");
-  }
-  const calculatePathLength = (curvePoints) => {
-    if (!curvePoints || curvePoints.length < 2) return 100;
-    let length = 0;
-    for (let i = 1; i < curvePoints.length; i++) {
-      const dx = curvePoints[i].x - curvePoints[i - 1].x;
-      const dy = curvePoints[i].y - curvePoints[i - 1].y;
-      length += Math.sqrt(dx * dx + dy * dy);
-    }
-    return Math.max(length, 50);
-  };
+// const KolamDisplay = ({
+//   pattern = { dimensions: { width: 400, height: 300 }, dots: [], curves: [] },
+//   animate = false,
+//   animationState = "stopped",
+//   animationTiming = 150,
+//   className = "",
+// }) => {
+//   const { dimensions, dots, curves } = pattern;
+//   const handleAnalysis = () => {
+//     alert("Analysis feature coming soon!");
+//   }
+//   const calculatePathLength = (curvePoints) => {
+//     if (!curvePoints || curvePoints.length < 2) return 100;
+//     let length = 0;
+//     for (let i = 1; i < curvePoints.length; i++) {
+//       const dx = curvePoints[i].x - curvePoints[i - 1].x;
+//       const dy = curvePoints[i].y - curvePoints[i - 1].y;
+//       length += Math.sqrt(dx * dx + dy * dy);
+//     }
+//     return Math.max(length, 50);
+//   };
 
-  const calculateLineLength = (x1, y1, x2, y2) => {
-    const dx = x2 - x1;
-    const dy = y2 - y1;
-    return Math.sqrt(dx * dx + dy * dy);
-  };
-
+//   const calculateLineLength = (x1, y1, x2, y2) => {
+//     const dx = x2 - x1;
+//     const dy = y2 - y1;
+//     return Math.sqrt(dx * dx + dy * dy);
+//   };
+  const KolamDisplayer = () => {
   return (
-    <div className={`relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-[var(--secondary-color)] bg-black/20 ${className}`}>
+    <div className={`relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-[var(--secondary-color)] bg-black/20`}>
       {/* SVG Kolam Display */}
-      <svg
+      {/* <svg
         width={dimensions.width}
         height={dimensions.height}
         viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
@@ -233,7 +244,8 @@ const KolamDisplay = ({
             );
           }
         })}
-      </svg>
+      </svg> */}
+      <KolamDisplay />
 
       {/* Bottom-right buttons */}
       <ServiceButton/>
@@ -292,4 +304,4 @@ const KolamVariations = ({ variations, onSelect }) => {
   );
 };
 
-export { KolamGeneratorInputs, KolamDisplay, KolamVariations };
+export { KolamGeneratorInputs, KolamDisplayer, KolamVariations };

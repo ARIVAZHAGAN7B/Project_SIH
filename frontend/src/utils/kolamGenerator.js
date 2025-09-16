@@ -458,7 +458,7 @@ export class KolamGenerator {
 		console.log(`Generating 1D Kolam of size ${size}`);
 
 		const matrix = this.proposeKolam1D(size);
-		console.log(`Generated matrix: ${matrix.length}x${matrix[0].length}`);
+		console.log(`Generated matrix: ${matrix.length}x0${matrix[0].length}`);
 
 		// Convert to visual kolam pattern using draw_kolam logic
 		const pattern = this.drawKolam(matrix);
@@ -467,3 +467,4 @@ export class KolamGenerator {
 		return pattern;
 	}
 }
+ 
