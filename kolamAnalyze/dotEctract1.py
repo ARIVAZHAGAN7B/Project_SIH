@@ -371,8 +371,8 @@ if __name__ == "__main__":
     # Initialize improved detector
     detector = ImprovedKolamDotDetector()
 
-    # image_path = "./black_images/Black_BG.png"
-    image_path = "./outputs/color.png"
+    image_path = "final_3colorImage1.png"
+    # image_path = "./outputs/color.png"
     
     print("Testing improved detection methods:")
     print("=" * 50)
