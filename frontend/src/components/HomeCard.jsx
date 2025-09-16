@@ -18,7 +18,7 @@ const HomeCard = () => {
       </div>
 
       {/* Description */}
-      <div className="p-6 rounded-2xl shadow-md bg-[var(--secondary-color)] hover:shadow-xl transition duration-300">
+      <div className="p-6 rounded-2xl shadow-md bg-[#1a1a32] hover:shadow-xl transition duration-300">
         <p className="leading-relaxed text-[var(--subtle-text-color)]">
           Kolam is a traditional line art drawn with dots, symbolizing harmony
           and geometry. Our project uses algorithms to identify design
@@ -27,7 +27,7 @@ const HomeCard = () => {
         </p>
         <button
           onClick={() => setShowMore(!showMore)}
-          className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition"
+          className="mt-4 cursor-pointer px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition"
         >
           {showMore ? "Show Less" : "Learn More"}
         </button>
