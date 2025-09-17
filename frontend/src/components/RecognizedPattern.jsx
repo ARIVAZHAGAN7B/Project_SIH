@@ -36,6 +36,8 @@ export function InputSection() {
       const url = URL.createObjectURL(file);
       setPreview(url);
        console.log("Selected image:", url); 
+      console.log("File name:", file.name); 
+      console.log("File type:", file.type); 
       dispatch(setCurrentImage(url)); // store in Redux
     }
   };
