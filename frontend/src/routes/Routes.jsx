@@ -23,7 +23,6 @@ export const routes = [
   { path: "/rule-extraction", element: <Rule />, label: "Rule" },
   {path: "/kolam-analysis", element: <KolamAnalysis />, label: "Kolam Analysis" },
   {path:"/about", element: <About />, label: "About" },
-  {path:"/kolam-editor", element: <KolamEditor />, label: "Kolam Editor" },
   {path:"/rangoli",element:<RangoliCard/>, label: "Rangoli"},
 ];
 
