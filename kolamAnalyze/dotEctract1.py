@@ -370,9 +370,9 @@ class ImprovedKolamDotDetector:
 if __name__ == "__main__":
     # Initialize improved detector
     detector = ImprovedKolamDotDetector()
-    
-    # Test with your image
-    image_path = "final_3colorImage1.png"  # Replace with your image path
+
+    image_path = "final_3colorImage1.png"
+    # image_path = "./outputs/color.png"
     
     print("Testing improved detection methods:")
     print("=" * 50)
@@ -394,7 +394,7 @@ if __name__ == "__main__":
     final_count = detector.count_dots(image_path, method='conservative_hybrid', visualize=True)
     
     # Save results
-    detector.save_results(image_path, "kolam_detected_dots_improved.jpg")
+    detector.save_results(image_path, "./outputs/result.jpg")
     
     print(f"\nFINAL DOT COUNT: {final_count}")
     if detector.grid_spacing:
